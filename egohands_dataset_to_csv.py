@@ -234,6 +234,7 @@ if __name__=="__main__":
     extracted = extract_folder(EGO_HANDS_FILE, source_dir, num_directories=NUM_DIRECTORIES_TO_KEEP)
     if extracted:
         rename_files(source_dir)
+        print(source_dir)
         
     generate_csv_files(source_dir)
     split_data_test_eval_train(source_dir, images_dir)
