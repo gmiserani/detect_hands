@@ -15,7 +15,6 @@ import csv
 
 """
 ORIGINAL SOURCE: https://github.com/molyswu/hand_detection/blob/temp/hand_detection/egohands_dataset_clean.py
-
 I have cleaned up slightly, allowed for python3 functionality and some other things too:
    > using os.path.join instead of string1 + "/" + string2
    > ignores bounding boxes in original dataset where xmin = xmax or ymin=ymax
@@ -91,6 +90,7 @@ def get_bbox_visualize(base_path, dir):
         if os.path.exists(csv_path + ".csv"):
             os.remove(csv_path+".csv")
         save_csv(csv_path + ".csv", csvholder)
+        
 
 
 def create_directory(dir_path):
@@ -166,7 +166,7 @@ def split_data_test_eval_train(source_image_dir, image_dir):
 
 
 def generate_csv_files(source_image_dir):
-    for root, dirs, filenames in os.walk(source_image_dir):
+    for root,  dirs,filenames in os.walk(source_image_dir):
         for dir in dirs:
             get_bbox_visualize(source_image_dir, dir)
 
@@ -178,7 +178,9 @@ def rename_files(source_image_dir):
     print("Renaming files")
     loop_index = 0
     for root, dirs, filenames in os.walk(source_image_dir):
+        print(source_image_dir)
         for dir in dirs:
+            print("bla")
             for f in os.listdir(os.path.join(source_image_dir, dir)):
                 if dir not in f:
                     if f.split(".")[-1] in image_filetypes:
@@ -190,48 +192,49 @@ def rename_files(source_image_dir):
                 else:
                     break
 
-def extract_folder(dataset_path, source_dir, num_directories=4):
-    if not os.path.exists("egohands"):
-        print("Extracting files")
-        zip_ref = zipfile.ZipFile(dataset_path, 'r')
-        print("> Extracting Dataset files")
-        zip_ref.extractall("egohands")
-        print("> Extraction complete")
-        zip_ref.close()
-        dirs = [os.path.join(source_dir, dir) for dir in os.listdir(source_dir)]
-        random.shuffle(dirs)
-        for d in dirs[num_directories:]:
-            shutil.rmtree(d)
-        return True
-    else:
-        print("Files already extracted.")
-        return False
+#def extract_folder(dataset_path, source_dir, num_directories=4):
+    #if not os.path.exists("egohands"):
+        #print("Extracting files")
+        #zip_ref = zipfile.ZipFile(dataset_path, 'r')
+        #print("> Extracting Dataset files")
+        #zip_ref.extractall("egohands")
+        #print("> Extraction complete")
+        #zip_ref.close()
+        #dirs = [os.path.join(source_dir, dir) for dir in os.listdir(source_dir)]
+        #random.shuffle(dirs)
+        #for d in dirs[num_directories:]:
+            #shutil.rmtree(d)
+        #return True
+    #else:
+        #print("Files already extracted.")
+        #return False
 
     
 
-def download_egohands_dataset(dataset_url, dataset_path):
-    is_downloaded = os.path.exists(dataset_path)
-    if not is_downloaded:
-        print(
-            "> downloading egohands dataset. This may take a while (1.3GB, say 3-5mins). Coffee break?")
+#def download_egohands_dataset(dataset_url, dataset_path):
+    #is_downloaded = os.path.exists(dataset_path)
+    #if not is_downloaded:
+        #print(
+            #"> downloading egohands dataset. This may take a while (1.3GB, say 3-5mins). Coffee break?")
         # opener = urllib.request.URLopener()
         # opener.retrieve(dataset_url, dataset_path)
-        os.system(f"wget {EGOHANDS_DATASET_URL}")
-        print("> download complete")
-    else:
-        print("Egohands dataset already downloaded.")
+        #os.system(f"wget {EGOHANDS_DATASET_URL}")
+        #print("> download complete")
+    #else:
+        #print("Egohands dataset already downloaded.")
 
 
 if __name__=="__main__":
 
-    EGOHANDS_DATASET_URL = "http://vision.soic.indiana.edu/egohands_files/egohands_data.zip"
-    EGO_HANDS_FILE = "egohands_data.zip"
-    source_dir = os.path.join('egohands', '_LABELLED_SAMPLES')
+    #EGOHANDS_DATASET_URL = "http://vision.soic.indiana.edu/egohands_files/egohands_data.zip"
+    EGO_HANDS_FILE = "/content/pasta"
+    source_dir = os.path.join('/content/pasta')
     NUM_DIRECTORIES_TO_KEEP = 4
     images_dir = 'images'
 
-    download_egohands_dataset(EGOHANDS_DATASET_URL, EGO_HANDS_FILE)
-    extracted = extract_folder(EGO_HANDS_FILE, source_dir, num_directories=NUM_DIRECTORIES_TO_KEEP)
+    #download_egohands_dataset(EGOHANDS_DATASET_URL, EGO_HANDS_FILE)
+    #extracted = extract_folder(EGO_HANDS_FILE, source_dir, num_directories=NUM_DIRECTORIES_TO_KEEP)
+    extracted = True
     if extracted:
         rename_files(source_dir)
         print(source_dir)
